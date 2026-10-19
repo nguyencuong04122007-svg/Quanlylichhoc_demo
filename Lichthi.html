@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#142b63" />
+  <title>Lịch thi</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="exams">
+  <main class="app">
+    <aside class="sidebar">
+      <div class="identity">
+        <div class="logo" aria-hidden="true">▦</div>
+        <div><h1>Thời khóa biểu</h1><p>Cổng quản lý học tập</p></div>
+      </div>
+      <nav class="main-nav" aria-label="Menu chính">
+        <a href="Quanlylichhoc.html#home">Trang chủ</a>
+        <div class="nav-group">
+          <button class="nav-toggle active" id="scheduleMenuToggle" type="button" aria-expanded="true" aria-controls="scheduleSubmenu">
+            <span>Thời khóa biểu</span><span class="nav-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="nav-submenu" id="scheduleSubmenu">
+            <a href="Quanlylichhoc.html#scheduleSection">Lịch học</a>
+            <a class="active" href="Lichthi.html" aria-current="page">Lịch thi</a>
+          </div>
+        </div>
+        <a href="Thongbao.html">Thông báo</a>
+      </nav>
+      <div class="sidebar-account">
+        <div class="profile">
+          <div class="profile-avatar" id="profileAvatar">SV</div>
+          <div><strong id="profileName">Sinh viên</strong><span id="profileEmail">Đã đăng nhập</span></div>
+        </div>
+        <div class="account-mode">
+          <span class="account-mode-label" id="accountModeLabel">Chế độ: Sinh viên</span>
+          <button class="mode-toggle" type="button" id="adminModeToggle" aria-pressed="false">Chuyển sang quản trị viên</button>
+        </div>
+        <button class="logout" type="button" id="logoutButton">Đăng xuất</button>
+      </div>
+    </aside>
+    <section class="content" aria-labelledby="pageTitle">
+      <header class="page-heading">
+        <h2 id="pageTitle">Lịch thi</h2>
+        <p>Theo dõi lịch thi và thời gian thi của bạn.</p>
+      </header>
+      <article class="card">
+        <div class="card-heading">
+          <h3>Lịch thi sắp tới</h3>
+          <button class="primary" type="button" id="addExam">＋ Thêm lịch thi</button>
+        </div>
+        <p class="empty-state" id="emptyState">Chưa có lịch thi được cập nhật.</p>
+        <p class="form-error" id="listError" role="alert" aria-live="polite"></p>
+        <div class="exam-list" id="examList" aria-live="polite"></div>
+      </article>
+    </section>
+  </main>
+  <div class="modal" id="examModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="dialog">
+      <div class="dialog-head">
+        <h3 id="modalTitle">Thêm lịch thi</h3>
+        <button class="close" type="button" id="closeModal" aria-label="Đóng">×</button>
+      </div>
+      <form id="examForm">
+        <div class="form-grid">
+          <div class="field full"><label for="examName">Tên môn thi</label><input id="examName" name="name" required maxlength="100" placeholder="Ví dụ: Cơ sở dữ liệu" /></div>
+          <div class="field"><label for="examDate">Ngày thi</label><input id="examDate" name="date" type="date" required /></div>
+          <div class="field"><label for="examTime">Giờ thi</label><input id="examTime" name="time" type="time" required /></div>
+          <div class="field"><label for="examRoom">Phòng thi</label><input id="examRoom" name="room" required maxlength="40" placeholder="Ví dụ: A203" /></div>
+          <div class="field"><label for="examType">Hình thức</label><select id="examType" name="type"><option value="Tự luận">Tự luận</option><option value="Trắc nghiệm">Trắc nghiệm</option><option value="Thực hành">Thực hành</option><option value="Vấn đáp">Vấn đáp</option></select></div>
+          <div class="field full"><label for="examNote">Ghi chú (không bắt buộc)</label><textarea id="examNote" name="note" maxlength="300" placeholder="Thông tin cần chuẩn bị hoặc lưu ý"></textarea></div>
+        </div>
+        <p class="form-error" id="formError" role="alert" aria-live="polite"></p>
+        <div class="form-actions">
+          <button class="control" type="button" id="cancelModal">Hủy</button>
+          <button class="primary" type="submit">Lưu lịch thi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="change-notice" id="changeNotice" role="status" aria-live="polite" hidden>
+    <span id="changeNoticeText"></span>
+    <a href="Thongbao.html">Xem thông báo</a>
+  </div>
+    <script src="Lichthi.js"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5f7fb" />
+  <title>Quản lý lịch học</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="schedule">
+  <main class="auth-screen" id="loginScreen">
+    <section class="auth-card" aria-labelledby="loginTitle">
+      <div class="auth-brand">
+        <div class="logo" aria-hidden="true">▦</div>
+        <div><h1>Thời khóa biểu</h1><p class="identity-caption">Cổng quản lý học tập</p></div>
+      </div>
+      <h1 id="loginTitle">Đăng nhập</h1>
+      <p>Đăng nhập để xem và quản lý thời khóa biểu của bạn.</p>
+      <form class="auth-form" id="loginForm">
+        <div class="field"><label for="loginEmail">Email</label><input id="loginEmail" name="email" type="email" autocomplete="username" required placeholder="ban@example.com" /></div>
+        <div class="field"><label for="loginPassword">Mật khẩu</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" minlength="6" required placeholder="Ít nhất 6 ký tự" /></div>
+        <p class="error" id="loginError" role="alert" aria-live="polite"></p>
+        <button class="primary" type="submit">Đăng nhập</button>
+      </form>
+      <div class="auth-note">Bản demo: nhập email bất kỳ và mật khẩu từ 6 ký tự trở lên. Đăng nhập được lưu trong phiên trình duyệt hiện tại; website tĩnh này chưa kết nối máy chủ xác thực.</div>
+    </section>
+  </main>
+
+  <main class="app" id="scheduleApp" hidden>
+    <aside class="sidebar">
+      <div class="identity">
+        <div class="logo" aria-hidden="true">▦</div>
+        <div><h1>Thời khóa biểu</h1><p>Cổng quản lý học tập</p></div>
+      </div>
+      <nav class="main-nav" aria-label="Menu chính">
+        <a class="active" href="#home" aria-current="page">Trang chủ</a>
+        <div class="nav-group">
+          <button class="nav-toggle" id="scheduleMenuToggle" type="button" aria-expanded="true" aria-controls="scheduleSubmenu">
+            <span>Thời khóa biểu</span><span class="nav-chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="nav-submenu" id="scheduleSubmenu">
+            <a href="#scheduleSection">Lịch học</a>
+            <a href="Lichthi.html">Lịch thi</a>
+          </div>
+        </div>
+        <a href="#lookupSection">Tra cứu lịch học</a>
+        <a href="Thongbao.html">Thông báo</a>
+      </nav>
+      <div class="sidebar-account">
+        <div class="profile">
+          <div class="profile-avatar">NC</div>
+          <div><strong id="profileName">Sinh viên</strong><span id="profileEmail">Đã đăng nhập</span></div>
+        </div>
+        <div class="account-mode">
+          <span class="account-mode-label" id="accountModeLabel">Chế độ: Sinh viên</span>
+          <button class="mode-toggle" type="button" id="adminModeToggle" aria-pressed="false">Chuyển sang quản trị viên</button>
+        </div>
+        <button class="logout" type="button" id="logoutButton">Đăng xuất</button>
+      </div>
+    </aside>
+
+    <div class="app-main">
+    <section class="welcome" id="home">
+      <div><h2>Lịch học của bạn</h2><p>Xem và quản lý lịch học theo tuần.</p></div>
+      <div class="today-chip" id="todayLabel"></div>
+    </section>
+
+    <section class="stats" aria-label="Tổng quan lịch học">
+      <article class="stat"><div class="stat-icon">▦</div><div><div class="stat-label">Buổi học trong tuần</div><div class="stat-value" id="lessonCount">0</div></div></article>
+      <article class="stat"><div class="stat-icon">◷</div><div><div class="stat-label">Môn học</div><div class="stat-value" id="courseCount">0</div></div></article>
+      <article class="stat"><div class="stat-icon">♧</div><div><div class="stat-label">Lớp học</div><div class="stat-value" id="classCount">0</div></div></article>
+      <article class="stat"><div class="stat-icon">☼</div><div><div class="stat-label">Ngày có lịch</div><div class="stat-value" id="dayCount">0</div></div></article>
+    </section>
+
+    <section class="lookup-card" id="lookupSection" aria-labelledby="lookupTitle">
+      <h2 id="lookupTitle">Tra cứu lịch học</h2>
+      <p>Tìm theo ngày, tên môn học, lớp, giảng viên hoặc phòng học trong các lịch đã lưu.</p>
+      <div class="lookup-filters">
+        <div class="lookup-field">
+          <input id="lessonSearch" type="search" autocomplete="off" placeholder="Ví dụ: Cơ sở dữ liệu, KTPM-01, giảng viên hoặc phòng" aria-label="Tìm lịch học theo môn, lớp, giảng viên hoặc phòng" />
+        </div>
+        <label class="lookup-date-label" for="lessonSearchDate">Tìm theo ngày
+          <input id="lessonSearchDate" type="date" aria-label="Chọn ngày cần tra cứu lịch học" />
+        </label>
+      </div>
+      <div class="lookup-results" id="lookupResults" aria-live="polite">
+        <p class="lookup-empty">Nhập từ khóa hoặc chọn ngày để tra cứu lịch học.</p>
+      </div>
+    </section>
+
+    <div class="schedule-layout">
+    <section class="schedule" id="scheduleSection" aria-label="Thời khóa biểu tuần">
+      <div class="toolbar">
+        <div class="week-tools">
+          <button class="control" type="button" id="previousWeek" aria-label="Tuần trước">‹</button>
+          <span class="week-label" id="weekLabel" aria-live="polite"></span>
+          <button class="control" type="button" id="nextWeek" aria-label="Tuần sau">›</button>
+          <button class="control" type="button" id="currentWeek">Hôm nay</button>
+          <select class="select view-select" id="viewMode" aria-label="Chế độ xem">
+            <option value="week">Xem theo tuần</option>
+            <option value="day">Xem theo ngày</option>
+          </select>
+        </div>
+        <div class="filters">
+          <select class="select" id="classFilter" aria-label="Lọc lớp"><option value="">Tất cả lớp</option></select>
+          <button class="primary" type="button" id="addLesson">＋ Thêm buổi học</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead id="scheduleHead"></thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+      <div class="legend">
+        <span><i class="dot"></i>Lý thuyết</span>
+        <span><i class="dot purple"></i>Thực hành</span>
+        <span><i class="dot green"></i>Dạy bù</span>
+        <span><i class="dot orange"></i>Nghỉ</span>
+        <span class="note">Lịch được lưu trên trình duyệt này.</span>
+      </div>
+    </section>
+    <aside class="calendar-card" aria-label="Chọn ngày trên lịch">
+      <div class="calendar-heading">
+        <h3 id="calendarMonth" aria-live="polite"></h3>
+        <div class="calendar-month-nav">
+          <button type="button" id="previousMonth" aria-label="Tháng trước">‹</button>
+          <button type="button" id="nextMonth" aria-label="Tháng sau">›</button>
+        </div>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+      <p class="calendar-help">Bấm vào một ngày để xem lịch học của ngày đó.</p>
+    </aside>
+    </div>
+
+    </div>
+  </main>
+
+  <div class="modal" id="lessonModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="dialog">
+      <div class="dialog-head"><h3 id="modalTitle">Thêm buổi học</h3><button class="close" type="button" id="closeModal" aria-label="Đóng">×</button></div>
+      <form id="lessonForm">
+        <div class="form-grid">
+          <div class="field"><label for="course">Tên môn học</label><input id="course" name="course" required maxlength="80" placeholder="Ví dụ: Cơ sở dữ liệu" /></div>
+          <div class="field"><label for="className">Lớp</label><input id="className" name="className" required maxlength="40" placeholder="Ví dụ: KTPM-01" /></div>
+          <div class="field"><label for="teacher">Giảng viên</label><input id="teacher" name="teacher" required maxlength="80" placeholder="Họ tên giảng viên" /></div>
+          <div class="field"><label for="room">Phòng học</label><input id="room" name="room" required maxlength="40" placeholder="Ví dụ: A203" /></div>
+          <div class="field" id="dayField"><label for="day">Thứ trong tuần</label><select id="day" name="day"><option value="1">Thứ 2</option><option value="2">Thứ 3</option><option value="3">Thứ 4</option><option value="4">Thứ 5</option><option value="5">Thứ 6</option><option value="6">Thứ 7</option><option value="7">Chủ nhật</option></select></div>
+          <div class="field"><label for="slot">Ca học</label><select id="slot" name="slot"><option value="0">07:00 – 09:00</option><option value="1">09:00 – 11:00</option><option value="2">13:00 – 15:00</option><option value="3">15:00 – 17:00</option></select></div>
+          <div class="field full" id="scopeField"><label for="scope">Áp dụng</label><select id="scope" name="scope"><option value="range">Lặp hàng tuần trong khoảng ngày</option><option value="once">Chỉ ngày đã chọn</option></select></div>
+          <div class="field full hidden" id="dateField"><label for="lessonDate">Ngày học</label><input id="lessonDate" name="date" type="date" /></div>
+          <div class="field full hidden" id="dateRangeField"><label for="startDate">Khoảng ngày học</label><div class="date-range"><input id="startDate" name="startDate" type="date" aria-label="Ngày bắt đầu" /><span>đến</span><input id="endDate" name="endDate" type="date" aria-label="Ngày kết thúc" /></div><span class="field-hint">Buổi học lặp vào thứ đã chọn, tính cả ngày bắt đầu và ngày kết thúc.</span></div>
+          <div class="field full"><label for="type">Hình thức</label><select id="type" name="type"><option value="lecture">Lý thuyết</option><option value="practice">Thực hành</option><option value="makeup">Dạy bù</option><option value="holiday">Nghỉ</option></select></div>
+        </div>
+        <p class="error" id="formError" role="alert"></p>
+        <div class="form-actions"><button class="control" type="button" id="deleteSeries" hidden>Xóa lịch lặp</button><button class="control" type="button" id="cancelModal">Hủy</button><button class="primary" type="submit" id="saveLesson">Lưu buổi học</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="schedule-notice" id="scheduleNotice" role="status" aria-live="polite" hidden>
+    <span id="scheduleNoticeText"></span>
+    <a href="Thongbao.html">Xem thông báo</a>
+  </div>
+
+    <script src="Quanlylichhoc.js"></script>
+</body>
+</html>
