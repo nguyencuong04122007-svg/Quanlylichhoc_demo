@@ -44,6 +44,17 @@
         <h2 id="pageTitle">Lịch thi</h2>
         <p>Theo dõi lịch thi và thời gian thi của bạn.</p>
       </header>
+      <section class="lookup-card" id="examLookupSection" aria-labelledby="examLookupTitle">
+        <h2 id="examLookupTitle">Tra cứu lịch thi</h2>
+        <p>Tìm theo ngày, tên môn, phòng thi hoặc hình thức thi.</p>
+        <div class="lookup-filters">
+          <input id="examSearch" type="search" autocomplete="off" placeholder="Ví dụ: Cơ sở dữ liệu, A203, Trắc nghiệm" aria-label="Tìm lịch thi" />
+          <input id="examSearchDate" type="date" aria-label="Tìm lịch thi theo ngày" />
+        </div>
+        <div class="lookup-results" id="examLookupResults" aria-live="polite">
+          <p class="lookup-empty">Nhập từ khóa hoặc chọn ngày để tra cứu lịch thi.</p>
+        </div>
+      </section>
       <article class="card">
         <div class="card-heading">
           <h3>Lịch thi sắp tới</h3>
