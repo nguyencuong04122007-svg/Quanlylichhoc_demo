@@ -15,13 +15,13 @@
         <div><h1>Thời khóa biểu</h1><p>Cổng quản lý học tập</p></div>
       </div>
       <nav class="main-nav" aria-label="Menu chính">
-        <a href="Quanlylichhoc.html#home">Trang chủ</a>
+        <a href="index.html#home">Trang chủ</a>
         <div class="nav-group">
           <button class="nav-toggle active" id="scheduleMenuToggle" type="button" aria-expanded="true" aria-controls="scheduleSubmenu">
             <span>Thời khóa biểu</span><span class="nav-chevron" aria-hidden="true">⌄</span>
           </button>
           <div class="nav-submenu" id="scheduleSubmenu">
-            <a href="Quanlylichhoc.html#scheduleSection">Lịch học</a>
+            <a href="index.html#scheduleSection">Lịch học</a>
             <a class="active" href="Lichthi.html" aria-current="page">Lịch thi</a>
           </div>
         </div>
@@ -67,8 +67,8 @@
           <div class="field"><label for="examDate">Ngày thi</label><input id="examDate" name="date" type="date" required /></div>
           <div class="field"><label for="examTime">Giờ thi</label><input id="examTime" name="time" type="time" required /></div>
           <div class="field"><label for="examRoom">Phòng thi</label><input id="examRoom" name="room" required maxlength="40" placeholder="Ví dụ: A203" /></div>
-          <div class="field"><label for="examType">Hình thức</label><select id="examType" name="type"><option value="Tự luận">Tự luận</option><option value="Trắc nghiệm">Trắc nghiệm</option><option value="Thực hành">Thực hành</option><option value="Vấn đáp">Vấn đáp</option></select></div>
-          <div class="field full"><label for="examNote">Ghi chú (không bắt buộc)</label><textarea id="examNote" name="note" maxlength="300" placeholder="Thông tin cần chuẩn bị hoặc lưu ý"></textarea></div>
+          <div class="field"><label for="examType">Hình thức</label><select id="examType" name="type"><option value="Tự luận">Tự luận</option><option value="Trắc nghiệm">Trắc nghiệm</option><option value="Vấn đáp">Vấn đáp</option></select></div>
+          <div class="field full"><label for="examNote">Ghi chú (không bắt buộc)</label><textarea id="examNote" name="note" maxlength="300" placeholder="Thông tin cần chuẩn bị hoặc lưu ý chuyên cần"></textarea></div>
         </div>
         <p class="form-error" id="formError" role="alert" aria-live="polite"></p>
         <div class="form-actions">
