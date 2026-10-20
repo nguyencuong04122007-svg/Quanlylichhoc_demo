@@ -105,6 +105,65 @@
       }
     }
 
+    function normalizeSearch(value) {
+      return String(value)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[đĐ]/g, 'd')
+        .toLocaleLowerCase('vi-VN')
+        .trim();
+    }
+
+    function renderExamLookup() {
+      const query = normalizeSearch(document.getElementById('examSearch').value);
+      const searchDate = document.getElementById('examSearchDate').value;
+      const results = document.getElementById('examLookupResults');
+
+      if (!query && !searchDate) {
+        results.innerHTML = '<p class="lookup-empty">Nhập từ khóa hoặc chọn ngày để tra cứu lịch thi.</p>';
+        return;
+      }
+
+      const matches = exams.filter(exam => {
+        const haystack = [
+          exam.name,
+          exam.room,
+          exam.type,
+          exam.note
+        ].join(' ');
+
+        const matchText = !query || normalizeSearch(haystack).includes(query);
+        const matchDate = !searchDate || exam.date === searchDate;
+        return matchText && matchDate;
+      });
+
+      if (!matches.length) {
+        results.innerHTML = '<p class="lookup-empty">Không tìm thấy lịch thi phù hợp.</p>';
+        return;
+      }
+
+      results.innerHTML = matches.map(exam => {
+        const date = new Intl.DateTimeFormat('vi-VN', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        }).format(new Date(`${exam.date}T12:00:00`));
+
+        return `
+          <article class="lookup-result">
+            <div>
+              <h3>${escapeHtml(exam.name)}</h3>
+              <p>
+                ${escapeHtml(date)} · ${escapeHtml(exam.time)}<br>
+                Phòng ${escapeHtml(exam.room)} · ${escapeHtml(exam.type)}
+              </p>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
     let exams = readExams();
 
     function renderExams() {
@@ -131,6 +190,7 @@
         </article>`;
       }).join('');
       document.querySelector('.card').classList.toggle('admin-mode', isAdminMode());
+      renderExamLookup();
     }
 
     function closeModal() {
@@ -234,7 +294,7 @@
     try {
       const activeUser = sessionStorage.getItem(authKey);
       if (!activeUser) {
-        window.location.replace('Quanlylichhoc.html');
+        window.location.replace('index.html');
       } else {
         const displayName = activeUser.split('@')[0].replace(/[._-]+/g, ' ').trim() || 'Sinh viên';
         document.getElementById('profileName').textContent = displayName;
@@ -245,7 +305,7 @@
       }
     } catch (error) {
       console.error('Không thể kiểm tra phiên đăng nhập:', error);
-      window.location.replace('Quanlylichhoc.html');
+      window.location.replace('index.html');
     }
     document.getElementById('logoutButton').addEventListener('click', () => {
       try {
@@ -256,7 +316,7 @@
         window.alert('Không thể đăng xuất. Hãy thử tải lại trang.');
         return;
       }
-      window.location.href = 'Quanlylichhoc.html';
+      window.location.href = 'index.html';
     });
 
     const scheduleMenuToggle = document.getElementById('scheduleMenuToggle');
@@ -266,5 +326,6 @@
       scheduleMenuToggle.setAttribute('aria-expanded', String(!isExpanded));
       scheduleSubmenu.hidden = isExpanded;
     });
+    document.getElementById('examSearch').addEventListener('input', renderExamLookup);
+    document.getElementById('examSearchDate').addEventListener('change', renderExamLookup);
     renderExams();
-  
